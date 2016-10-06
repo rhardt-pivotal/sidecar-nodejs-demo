@@ -1,8 +1,9 @@
 {
-  "name": "cf-nodejs",
+  "name": "node-demo-rhardt",
   "version": "1.0.0",
   "dependencies": {
     "express": "^4.13.4",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "restler": "^3.4.0"
   }
 }

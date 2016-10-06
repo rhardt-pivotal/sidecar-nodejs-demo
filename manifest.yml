@@ -1,6 +1,9 @@
 ---
 applications:
-- name: cf-nodejs
-  memory: 512M
+- name: node-demo
+  memory: 1G
   instances: 1
-  random-route: true
+  host: node-demo-${random-word}
+  buildpack: https://github.com/rhardt-pivotal/sidecar-buildpack.git
+  services:
+    - service-registry

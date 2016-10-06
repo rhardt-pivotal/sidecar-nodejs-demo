@@ -1,5 +1,40 @@
-# Node.js Sample App
+# Sidecar Ruby Demo
 
-```cf push```
+[[img-sidecar]]
+image::https://upload.wikimedia.org/wikipedia/commons/c/c2/Bundesarchiv_Bild_102-12561,_Berlin,_Fahrrad_mit_Beiwagen.jpg[Sidecar]
 
-https://docs.cloudfoundry.org/buildpacks/node/node-tips.html
+This is a small NodeJS app to demonstrate the https://github.com/rhardt-pivotal/sidecar-buildpack[Sidecar Buildpack]
+
+## Usage
+* push to Cloud Foundry
++
+----
+cf push 
+----
++
+* To work as advertised this app requires the https://docs.pivotal.io/spring-cloud-services/1-1/[Spring Cloud Services]
+Service Broker to be bound to it.
+
+
+## Details
+This app serves fortunes from the following endpoints:
+
+* `/javafortune`
+* `/rubyfortune`
+* `/pythonfortune`
+* `/gofortune`
+
+Here is the sequence of events by which these endpoints become up and available:
+
+.  The app is pushed and started
+.  A Spring Boot `sidecar` is also deployed and started at the same time in the same application container
+.  The sidecar discovers a Eureka server and registers on behalf of this app as `node-demo`
+.  The sidecar looks for everything else registered in Eureka and exposes it locally via a https://github.com/Netflix/zuul[Zuul] proxy.
+*  For example, the `ruby-demo` application is made available locally as http://127.0.0.1:8087/ruby-demo/
+*  ... so the this app could send a request to the ruby-demo's `/javafortune` endpoint would therefore be at: http://127.0.0.1:8087/ruby-demo/javafortune
+*  conversely, other sidecar-enabled apps can reach this app's `/javafortune` endpoint locally at http://127.0.0.1/node-demo/javafortune
+
+This app began life https://github.com/cloudfoundry-samples/cf-sample-app-nodejs[here]
+
+
+This is part of a suite of demos for the https://github.com/rhardt-pivotal/sidecar-buildpack[Sidecar Buildpack]
